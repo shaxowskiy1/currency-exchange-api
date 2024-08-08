@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,15 +6,14 @@
     <title>Person</title>
 </head>
 <body>
-<p th:text="${person.getName()}"></p>
-<p th:text="${person.getId()}"></p>
+<p th:text="${'Name: ' + person.getName() + ', ' + person.getAge()}">VALUE</p>
+<p th:text="${'Email: ' + person.getEmail()}">VALUE</p>
+<p th:text="${'Id:' + person.getId()}">VALUE</p>
 
-<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit this person</a>
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
 
-<form th:action="@{/people/{id}(id = ${person.getId()})}" th:method="DELETE">
-    <input type="submit" th:value="Delete">
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+    <input type="submit" value="Delete"/>
 </form>
-
-
 </body>
 </html>

@@ -1,9 +1,10 @@
 package ru.shaxowskiy.springlesson.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.shaxowskiy.springlesson.dao.daoPeople;
 import ru.shaxowskiy.springlesson.model.Person;
@@ -47,10 +48,13 @@ public class PeopleController {
     /*
     POST метод для отправки через форму
      */
+
     @PostMapping
-    public String createPerson(@ModelAttribute Person person,
-                               Model model){
-        //model.addAttribute("person", person);
+    public String createPerson(@ModelAttribute("person") @Valid Person person,
+                               BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "/people/new";
+        }
         daoPeople.save(person);
 
 
@@ -66,8 +70,13 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    public String updatePerson(@ModelAttribute("person") Person person,
+    public String updatePerson(@ModelAttribute("person") @Valid Person person,
+                               BindingResult bindingResult,
                                @PathVariable("id") int id){
+        if (bindingResult.hasErrors()){
+            return "/people/edit";
+        }
+        System.out.println("Id in controller222: " + id);
         daoPeople.update(id, person);
         return "redirect:/people";
     }
