@@ -9,8 +9,23 @@
 <p th:text="${'Name: ' + person.getName() + ', ' + person.getAge()}">VALUE</p>
 <p th:text="${'Email: ' + person.getEmail()}">VALUE</p>
 <p th:text="${'Id:' + person.getId()}">VALUE</p>
+<p th:text="${'Address: ' + person.getAddress()}">VALUE</p>
 
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
+
+<div th:if="${book == null}">
+    <p>Human have not a books</p>
+</div>
+
+<div th:if="${book != null}">
+    <hr>
+    <b>books: </b>
+    <br>
+    <table th:each="book : ${book}">
+        <tr th:text="${'title: ' + book.getTitle()}">book</tr>
+    </table>
+
+</div>
 
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
     <input type="submit" value="Delete"/>

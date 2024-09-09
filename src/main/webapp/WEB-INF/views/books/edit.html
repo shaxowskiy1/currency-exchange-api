@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit book</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/books/{id}(id=${book.id})}" th:object="${book}">
+    <label for="title">Enter title: </label>
+    <input type="text" th:field="*{title}" id="title"/>
+    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Name Error</div>
+    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+    <br/>
+    <label for="author">Enter author: </label>
+    <input type="text" th:field="*{author}" id="author"/>
+    <div style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Age Error</div>
+    <span th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+    <br/>
+    <label for="publication_year">Enter publication_year: </label>
+    <input type="text" th:field="*{publication_year}" id="publication_year"/>
+    <!<div style="color:red" th:if="${#fields.hasErrors('publication_year')}" th:errors="*{publication_year}">Email Error</div>-->
+    <span th:if="${#fields.hasErrors('publication_year')}" th:errors="*{publication_year}"></span>
+    <br/>
+    <label for="isbn">Enter isbn: </label>
+    <input type="text" th:field="*{isbn}" id="isbn"/>
+    <div style="color:red" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">isbn Error</div>
+    <span th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span>
+    <br>
+    <br>
+    <input type="submit" value="Update!"/>
+
+</form>
+
+</body>
+</html>

@@ -1,27 +1,38 @@
-package ru.shaxowskiy.springlesson.controllers;
+package ru.shaxowskiy.springlesson.people.controllers;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.shaxowskiy.springlesson.dao.daoPeople;
-import ru.shaxowskiy.springlesson.model.Person;
+import ru.shaxowskiy.springlesson.people.dao.DaoBook;
+import ru.shaxowskiy.springlesson.people.dao.daoPeople;
+import ru.shaxowskiy.springlesson.people.model.Person;
+import ru.shaxowskiy.springlesson.util.PersonValidator;
 
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
+
+    private final daoPeople DaoPeople;
+    private final PersonValidator personValidator;
+    private final DaoBook daoBook;
+
     @Autowired
-    private daoPeople daoPeople;
+    public PeopleController(daoPeople daoPeople, PersonValidator personValidator, DaoBook daoBook) {
+        this.DaoPeople = daoPeople;
+        this.personValidator = personValidator;
+        this.daoBook = daoBook;
+    }
 
     /*
-    Выводим в отображение список всех людей из DAO
-     */
+        Выводим в отображение список всех людей из DAO
+         */
     @GetMapping
     public String index(Model model){
-        model.addAttribute("people", daoPeople.getListOfPeople());
+        model.addAttribute("people", DaoPeople.getListOfPeople());
 
         return "/people/index";
     }
@@ -31,12 +42,10 @@ public class PeopleController {
         /*
         Выводим в отображение список по одному человек по указанному id из DAO
          */
-        model.addAttribute("person", daoPeople.getPersonById(id));
+        model.addAttribute("person", DaoPeople.getPersonById(id));
+        model.addAttribute("book", daoBook.getBookByPersonId(id));
         return "/people/show";
     }
-    /*
-    GET метод для страницы добавления нового человека!
-     */
 
     @GetMapping("/new")
     public String newPerson(Model model){
@@ -52,10 +61,12 @@ public class PeopleController {
     @PostMapping
     public String createPerson(@ModelAttribute("person") @Valid Person person,
                                BindingResult bindingResult){
+        personValidator.validate(person, bindingResult);
+
         if(bindingResult.hasErrors()){
             return "/people/new";
         }
-        daoPeople.save(person);
+        DaoPeople.save(person);
 
 
         return "redirect:/people";
@@ -64,7 +75,7 @@ public class PeopleController {
     @GetMapping("/{id}/edit")
     public String update(@PathVariable("id") int id,
                          Model model){
-        model.addAttribute("person", daoPeople.getPersonById(id));
+        model.addAttribute("person", DaoPeople.getPersonById(id));
 
         return "/people/edit";
     }
@@ -73,18 +84,21 @@ public class PeopleController {
     public String updatePerson(@ModelAttribute("person") @Valid Person person,
                                BindingResult bindingResult,
                                @PathVariable("id") int id){
+        personValidator.validate(person, bindingResult);
+
         if (bindingResult.hasErrors()){
             return "/people/edit";
         }
-        System.out.println("Id in controller222: " + id);
-        daoPeople.update(id, person);
+        DaoPeople.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String deletePerson(@PathVariable("id") int id){
-        daoPeople.delete(id);
+        DaoPeople.delete(id);
         return "redirect:/people";
     }
+
+
 
 }
