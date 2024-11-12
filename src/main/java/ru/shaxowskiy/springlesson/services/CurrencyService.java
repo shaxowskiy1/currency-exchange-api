@@ -10,5 +10,5 @@ public interface CurrencyService {
     Currency findByName(String name);
     List<Currency> findAll();
     void deleteById(Integer id);
-    void updateCurrency(Currency currency);
+    void updateCurrency(Currency currency, Integer id);
 }

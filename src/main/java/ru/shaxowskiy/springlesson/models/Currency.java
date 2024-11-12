@@ -1,5 +1,6 @@
 package ru.shaxowskiy.springlesson.models;
 
+
 public class Currency {
     private int id;
 

@@ -150,7 +150,7 @@ public class ExchangeRatesRepository implements CrudRepository<ExchangeRates, In
     }
 
     @Override
-    public void update(ExchangeRates entity) {
+    public void update(ExchangeRates entity, Integer integer) {
 
     }
 

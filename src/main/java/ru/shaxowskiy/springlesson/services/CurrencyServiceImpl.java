@@ -46,10 +46,15 @@ public class CurrencyServiceImpl implements CurrencyService{
     }
 
     @Override
-    public void updateCurrency(Currency currency) {
-        Currency newCurrency = setMeaningInCurrency(currency.getCode(), currency.getFullname(), currency.getSign());
-
-        currencyRepository.update(newCurrency);
+    public void updateCurrency(Currency currency, Integer id) {
+        System.out.println("ЗАХОД В UPDATE");
+        Currency currencyToBeUpdated = findById(id);
+        System.out.println(currencyToBeUpdated.toString());
+        currencyToBeUpdated.setFullname(currency.getFullname());
+        currencyToBeUpdated.setCode(currency.getCode());
+        currencyToBeUpdated.setSign(currency.getSign());
+        System.out.println("сохраняем " + currencyToBeUpdated.toString());
+        currencyRepository.update(currencyToBeUpdated, id);
     }
 
 

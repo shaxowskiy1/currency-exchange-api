@@ -12,7 +12,7 @@ public interface CrudRepository <T, ID> {
 
     void create(T entity);
 
-    void update(T entity);
+    void update(T entity, ID id);
 
     void delete(ID id);
 

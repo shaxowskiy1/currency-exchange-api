@@ -98,13 +98,14 @@ public class CurrencyRepository implements CrudRepository<Currency, Integer>
     }
 
     @Override
-    public void update(Currency currency) {
+    public void update(Currency currency, Integer id) {
         final String query = "UPDATE currencies SET code=?, fullname=?, sign=? WHERE id=?";
         try (Connection connection = dataSource.getConnection()){
             PreparedStatement preparedStatement =
                     connection.prepareStatement(query);
             initializingRowsFromDatabase(currency,preparedStatement);
-            preparedStatement.setInt(4, currency.getId());
+            preparedStatement.setInt(4, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,6 +119,7 @@ public class CurrencyRepository implements CrudRepository<Currency, Integer>
             PreparedStatement preparedStatement =
                     connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

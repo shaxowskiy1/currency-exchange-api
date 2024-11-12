@@ -37,9 +37,14 @@ public class CurrencyController {
         currencyService.createCurrency(currency);
     }
 
-    //TODO add id
-    @PatchMapping("/currencies")
-    public void updateCurrency(@RequestBody Currency currency){
-        currencyService.updateCurrency(currency);
+    @PatchMapping("/currencies/{id}")
+    public void updateCurrency(@RequestBody Currency currency,
+                               @PathVariable("id") Integer id){
+        System.out.println("Обнова в контроллере " + currency.toString() + " " + id);
+        currencyService.updateCurrency(currency, id);
+    }
+    @DeleteMapping("/currencies/{id}")
+    public void deleteCurrency(@PathVariable("id") Integer id){
+        currencyService.deleteById(id);
     }
 }
